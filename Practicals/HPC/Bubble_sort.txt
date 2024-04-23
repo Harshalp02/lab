@@ -1,0 +1,41 @@
+#include <iostream>
+#include <omp.h>
+using namespace std;
+
+void swap(int *a, int *b) 
+{
+  int temp = *a;
+  *a = *b;
+  *b = temp;
+}
+
+void parallel_bubble_sort(int *array, int size) 
+{
+  #pragma omp parallel for
+  for (int i = 0; i < size - 1; i++) 
+  {
+    for (int j = 0; j < size - i - 1; j++) 
+    {
+      if (array[j] > array[j + 1]) 
+      {
+        swap(&array[j], &array[j + 1]);
+      }
+    }
+  }
+}
+
+int main() 
+{
+  int array[] = {5, 3, 2, 1, 4};
+  int size = sizeof(array) / sizeof(array[0]);
+
+  parallel_bubble_sort(array, size);
+
+  for (int i = 0; i < size; i++) 
+  {
+    cout << array[i] << " ";
+  }
+  cout << endl;
+
+  return 0;
+}
